@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -37,6 +38,23 @@ public class GetArticles {
             {
                 System.out.println(abstractList.item(i).getTextContent());
                 fw.write(abstractList.item(i).getTextContent()+"\n");
+            }
+            System.out.println("Author List");
+            NodeList authorGroup = doc.getElementsByTagName("Author");
+            for(int i=0; i<authorGroup.getLength(); i++)
+            {
+                Node author = authorGroup.item(i);
+                NodeList name = author.getChildNodes();
+                for(int j=0; j<name.getLength(); j++)
+                {
+                    if(name.item(j).getNodeName().equalsIgnoreCase("LastName")||name.item(j).getNodeName().equalsIgnoreCase("ForeName"))
+                    {
+                        System.out.print(name.item(j).getTextContent()+" ");
+                        fw.write(name.item(j).getTextContent()+" ");
+                    }
+                }
+                fw.write(",");
+                System.out.println();
             }
             fw.flush();
         }
